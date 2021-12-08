@@ -1,13 +1,13 @@
 import React from 'react';
 import Book from './Book';
 import { Grid } from "@mui/material";
-import { books } from '../sample data/Data';
+import bookdata from '../sample data/bookdata.json';
 
 function Bookshelf() {
     return (
         <Grid container spacing={3}>
             {
-            books.map((book) => (
+            bookdata.map((book) => (
                 <Grid item xs={12} sm={4}> 
                     <Book book={book} />
                 </Grid>

@@ -4,17 +4,19 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
+import { Link } from 'react-router-dom';
 import Typography from '@mui/material/Typography';
+import { Link as RouterLink } from 'react-router-dom';
 
 export default function Book({book}) {
   return (
     <Card sx={{ maxWidth: 345 }}>
-      {/* <CardMedia
+      <CardMedia
         component="img"
         height="140"
-        image="/static/images/cards/contemplative-reptile.jpg"
+        image={book.thumbnail}
         alt="green iguana"
-      /> */}
+      />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
           {book.title}
@@ -30,8 +32,9 @@ export default function Book({book}) {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small">Read</Button>
-        <Button size="small">Learn More</Button>
+      
+        <RouterLink to={`/${book.title}`} btn btn-primary>Read More</RouterLink>
+
       </CardActions>
     </Card>
   );
