@@ -17,6 +17,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import bookdata from '../sample data/bookdata.json';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
+import { Link, Button, Element, Events, animateScroll as scroll, scrollSpy, scroller } from 'react-scroll';
 import BookmarkAddIcon from '@mui/icons-material/BookmarkAdd';
 import BookmarkAddedIcon from '@mui/icons-material/BookmarkAdded';
 import { ListItemIcon } from '@mui/material';
@@ -116,12 +117,14 @@ function ResponsiveDrawer(props) {
               { open[index]? <ExpandLess /> : <ExpandMore />}
               </ListItemButton>
               {
-                 sub_book.chapters.map((chapters) => (
+                 sub_book.chapters.map((chapters, i) => (
                    <Collapse in={open[temp]} timeout="auto" unmountOnExit>
                    <List component="div" disablePadding>
+                   <Link activeClass="active" className={`element ${temp}.${i}`} to={`element ${index}.${i}`} offset={-70} spy={true} smooth={true} duration={500}>
                      <ListItemButton sx={{ pl: 4 }}>
                        <ListItemText primary={chapters.title} />
                      </ListItemButton>
+                     </Link>
                    </List>
                    </Collapse>
                  )
@@ -224,6 +227,7 @@ function ResponsiveDrawer(props) {
                 sub_book.chapters.map((chapters, i) => {
                     const cno=i;
                     return(<>
+                    <Element id={`element ${sno}.${cno}`} className="element">
                     <Typography variant="h4" style={{paddingTop: '3rem', paddingBottom: '1rem', textAlign: 'center'}}>{chapters.title}</Typography>
                     {
                         chapters.paras.map((para, i) => {
@@ -246,6 +250,7 @@ function ResponsiveDrawer(props) {
                             )
                         })
                     }
+                    </Element>
                     <Divider />
                     </>)
                 })
