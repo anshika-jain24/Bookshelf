@@ -9,7 +9,7 @@ import { Link as RouterLink } from 'react-router-dom';
 
 export default function Book({book,img}) {
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card sx={{ m:2, minHeight:450, position:'relative'}}>
       <CardMedia
         component="img"
         height="300"

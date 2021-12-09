@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -79,9 +79,13 @@ function ResponsiveDrawer(props) {
   const handleModalOpen = () => setModalOpen(true);
   const handleModalClose = () => setModalOpen(false);
 
-  const [bookmarks, setBookmarks]=useState([
+  const dat=localStorage.getItem('data');
 
-  ]);
+  const [bookmarks, setBookmarks]=useState(JSON.parse(dat).length > 0 ? JSON.parse(dat):[]);
+
+  useEffect(() => {
+    localStorage.setItem('data', JSON.stringify(bookmarks))
+  }, [bookmarks])
 
   console.log(open);
   
