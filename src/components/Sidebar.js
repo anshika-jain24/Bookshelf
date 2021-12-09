@@ -82,7 +82,7 @@ function ResponsiveDrawer(props) {
 
   const dat=localStorage.getItem('data');
 
-  const [bookmarks, setBookmarks]=useState(JSON.parse(dat).length > 0 ? JSON.parse(dat):[]);
+  const [bookmarks, setBookmarks]=useState(JSON.parse(dat) ? JSON.parse(dat):[]);
 
   useEffect(() => {
     localStorage.setItem('data', JSON.stringify(bookmarks))
