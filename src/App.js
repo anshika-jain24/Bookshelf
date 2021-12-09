@@ -17,9 +17,10 @@ const BookRender = () => {
 }
 
 function App() {
+
   return (
     <Router>
-      <h1>WELCOME TO THE BOOKSHELF</h1>
+      <h1 style={{textAlign: 'center'}}>WELCOME TO THE BOOKSHELF</h1>
         <Routes>
           <Route path="/" element={<Bookshelf />}/>
           <Route path="/:book" element={<BookRender />}/>

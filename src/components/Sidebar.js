@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useState} from 'react';
 import PropTypes from 'prop-types';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -7,20 +7,63 @@ import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
+import Collapse from '@mui/material/Collapse';
+import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore';
 import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import bookdata from '../sample data/bookdata.json';
+import BookmarkIcon from '@mui/icons-material/Bookmark';
+import BookmarkAddIcon from '@mui/icons-material/BookmarkAdd';
+import BookmarkAddedIcon from '@mui/icons-material/BookmarkAdded';
+import { ListItemIcon } from '@mui/material';
+import Modal from '@mui/material/Modal';
 
 const drawerWidth = 240;
 
 function ResponsiveDrawer(props) {
+  
+  const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 1000,
+    height: '50vh' ,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+    overflow : 'scroll'
+  };
+
   console.log(props);
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
+
+  const handleClick = (i) => {
+    const newArray=open.map((item,index) => {
+      if(i !==index){
+        return false;
+      }
+      else{
+        return !item;
+      }
+    })
+    setOpen(newArray);
+  };
+
+  const addToBookmark = (sno, cno, pno) =>{
+    setBookmarks([...bookmarks, {
+      "bookTitle":props.book,
+      "subBook":sno,
+      "chapter":cno,
+      "para":pno,
+    }])
+  }
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -29,21 +72,58 @@ function ResponsiveDrawer(props) {
   const bookItem = bookdata.filter(a => 
       a.title === props.book
   )[0]
+  
+  const [open, setOpen] = useState(new Array(bookItem.sub_books.length).fill(false));
 
+  const [openModal, setModalOpen] = React.useState(false);
+  const handleModalOpen = () => setModalOpen(true);
+  const handleModalClose = () => setModalOpen(false);
+
+  const [bookmarks, setBookmarks]=useState([
+
+  ]);
+
+  console.log(open);
+  
   console.log(bookItem);
-
 
   const drawer = (
     <div>
+
       <Toolbar />
       <Divider />
       <List>
+        <ListItemButton onClick={handleModalOpen}>
+          <ListItemIcon>
+            <BookmarkIcon/>
+          </ListItemIcon>
+          <ListItemText>
+            Bookmarks
+          </ListItemText>
+          </ListItemButton>
+          {console.log(bookmarks)}
         {
-            bookItem.sub_books.map((sub_book) => (
-                sub_book.chapters.map((chapters) => (
-                    <ListItem>{chapters.title}</ListItem>
-                ))
-            ))
+            bookItem.sub_books.map((sub_book, index) => {
+              const temp=index;
+              return(
+              <>
+              <ListItemButton onClick={() => handleClick(index)}>
+              <ListItemText primary={`Sub-Book ${index}`} />
+              { open[index]? <ExpandLess /> : <ExpandMore />}
+              </ListItemButton>
+              {
+                 sub_book.chapters.map((chapters) => (
+                   <Collapse in={open[temp]} timeout="auto" unmountOnExit>
+                   <List component="div" disablePadding>
+                     <ListItemButton sx={{ pl: 4 }}>
+                       <ListItemText primary={chapters.title} />
+                     </ListItemButton>
+                   </List>
+                   </Collapse>
+                 )
+            )}
+             </>)} )
+            
         }
       </List>
       <Divider />
@@ -56,6 +136,23 @@ function ResponsiveDrawer(props) {
 
   return (
     <Box sx={{ display: 'flex' }}>
+      <Modal
+        open={openModal}
+        onClose={handleModalClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          {
+            bookmarks.map((item) => (
+              <>
+              <Typography>{`Sub-Book ${item.subBook}`} {`Chapter ${item.chapter}`}</Typography>
+              <Typography>{bookItem.sub_books[item.subBook].chapters[item.chapter].paras[item.para].content}</Typography>
+              </>
+            ))
+          }
+        </Box>
+      </Modal>
       <CssBaseline />
       <AppBar
         position="fixed"
@@ -117,19 +214,38 @@ function ResponsiveDrawer(props) {
       >
         <Typography paragraph>
           {
-               bookItem.sub_books.map((sub_book) => (
-                sub_book.chapters.map((chapters) => (
-                    <>
+               bookItem.sub_books.map((sub_book, i) => {
+                const sno=i;
+                return (
+                sub_book.chapters.map((chapters, i) => {
+                    const cno=i;
+                    return(<>
                     <Typography variant="h4" style={{padding: '1rem', textAlign: 'center'}}>{chapters.title}</Typography>
                     {
-                        chapters.paras.map((para) => (
-                            <Typography>{para.content}</Typography>
-                        ))
+                        chapters.paras.map((para, i) => {
+                            const obj = {
+                              "bookTitle":props.book,
+                              "subBook":sno,
+                              "chapter":cno,
+                              "para": i,
+                            };
+                            
+                            return(
+                              <>
+                             {
+                               bookmarks.filter(item => JSON.stringify(item)===JSON.stringify(obj)).length > 0 ?
+                               <Typography paragraph style={{
+                                 background:'pink'
+                               }} >{para.content}<BookmarkAddedIcon /></Typography> : <Typography paragraph >{para.content}<BookmarkAddIcon onClick={() => addToBookmark(sno,cno,i)} /></Typography>
+                            }
+                               </>
+                            )
+                        })
                     }
                     <Divider />
-                    </>
-                ))
-            ))
+                    </>)
+                })
+              )})
           }
         </Typography>
       </Box>
