@@ -2,9 +2,6 @@
 
 This application allows the user to read different books and scroll through their subbooks. While reading, the users can also add bookmarks, which will be highlighted and stored and can be viewed later by clicking on bookmarks option.
 
---------------------------------------------------------------------------------------------------------------------------------------------
---------------------------------------------------------------------------------------------------------------------------------------------
-
 # FEATURES
 
 ### 1. Dashboard - 
@@ -20,8 +17,6 @@ By clicking on read more, the user will be directed to another page where he can
 - It has a sidebar where all the subbooks of the book are displayed along with the chapters contained by them. The user can click on any chapter to go to it and read.
 - There is an option to bookmark paragraphs, which will be hoghlighted upon bookmarking.
 
--------------------------------------------------------------------------------------------------------------------------------------------------
--------------------------------------------------------------------------------------------------------------------------------------------------
 
 ## HOW TO RUN THIS APP LOCALLY
 
