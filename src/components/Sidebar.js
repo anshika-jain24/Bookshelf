@@ -224,7 +224,7 @@ function ResponsiveDrawer(props) {
                 sub_book.chapters.map((chapters, i) => {
                     const cno=i;
                     return(<>
-                    <Typography variant="h4" style={{padding: '1rem', textAlign: 'center'}}>{chapters.title}</Typography>
+                    <Typography variant="h4" style={{paddingTop: '3rem', paddingBottom: '1rem', textAlign: 'center'}}>{chapters.title}</Typography>
                     {
                         chapters.paras.map((para, i) => {
                             const obj = {

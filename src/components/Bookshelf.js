@@ -6,12 +6,15 @@ import book1 from '../assets/images/book1.jpg';
 import book2 from '../assets/images/book2.jpg';
 import book3 from '../assets/images/book3.jpg';
 import book4 from '../assets/images/book4.jpg';
+import ButtonAppBar from './Navbar';
 
 function Bookshelf() {
 
     const images = [book1,book2,book3,book4]
 
     return (
+        <>
+        <ButtonAppBar />
         <Grid container>
             {
             bookdata.map((book,index) => (
@@ -21,6 +24,7 @@ function Bookshelf() {
              ))
             }
         </Grid>
+        </>
     )
 }
 
